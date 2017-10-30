@@ -4,6 +4,18 @@ from scrapeHelper import *
 import pandas as pd
 import numpy as np
 
+weekList = []
+yearList = []
+GIDList = []
+nameList = []
+posList = []
+teamList = []
+homeAwayList = []
+opponentList = []
+pointsList = []
+salaryList = []
+allLists = [weekList,yearList,GIDList,nameList,posList,teamList,homeAwayList,opponentList,pointsList,salaryList]
+
 '''
 urlTemp = 'http://http://rotoguru1.com/cgi-bin/fyday.pl?week='
 
@@ -22,18 +34,18 @@ for eachYear in range(firstYear,lastYear+1):
 
 '''
 
-
 url = 'http://rotoguru1.com/cgi-bin/fyday.pl?week=7&year=2017&game=fd&scsv=1'
-page= requests.get(url)
+page = requests.get(url)
 soup = BeautifulSoup(page.content, 'html.parser')
 
-# Takes all data which is found in a <pre> tag in this case
-actualData = soup.find_all('pre')[0].get_text()
+# Grab Data
+delimitedData = grabData(soup)
 
-# Separates the data by semi-colons and stores in a list
-myList = actualData.split(';')
-print myList[:100]
-print type(myList)
+# Turn it into list of rows
+appendData(delimitedData,allLists)
+
+print allLists
+    
 
 
 
