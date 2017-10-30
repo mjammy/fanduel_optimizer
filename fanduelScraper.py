@@ -16,8 +16,7 @@ pointsList = []
 salaryList = []
 allLists = [weekList,yearList,GIDList,nameList,posList,teamList,homeAwayList,opponentList,pointsList,salaryList]
 
-'''
-urlTemp = 'http://http://rotoguru1.com/cgi-bin/fyday.pl?week='
+urlTemp = 'http://rotoguru1.com/cgi-bin/fyday.pl?week='
 
 firstYear= getFirstYear()
 lastYear = getLastYear()
@@ -29,21 +28,24 @@ for eachYear in range(firstYear,lastYear+1):
 
     for eachWeek in range(firstWeek,lastWeek+1):
 
-        url = 'http://http://rotoguru1.com/cgi-bin/fyday.pl?week=' + str(eachWeek) + '&year=' + str(eachYear) + '&game=fd&scsv=1'
+        url = urlTemp + str(eachWeek) + '&year=' + str(eachYear) + '&game=fd&scsv=1'
         print url
 
-'''
+        # Get all inner HTML using requests/BeautifulSoup
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
 
-url = 'http://rotoguru1.com/cgi-bin/fyday.pl?week=7&year=2017&game=fd&scsv=1'
-page = requests.get(url)
-soup = BeautifulSoup(page.content, 'html.parser')
+        # Grab Data
+        delimitedData = grabData(soup)
 
-# Grab Data
-delimitedData = grabData(soup)
+        # Append all data into a set of lists
+        appendData(delimitedData,allLists)
 
-# Turn it into list of rows
-appendData(delimitedData,allLists)
-    
+        print("Appended: Year - " + str(eachYear) + ", Week - " + str(eachWeek))
+
+''' Creates CSV for data that has beens scraped '''
+
+# Turns our lists into a dict
 d = {   "Year" : yearList,
         "Week" : weekList,
         "Position" : posList,
@@ -54,8 +56,10 @@ d = {   "Year" : yearList,
         "Points" : pointsList, 
         "Fanduel Salary" : salaryList }
 
+# Makes dataframe consisting of the columns in dict
 df = pd.DataFrame(d)
 
-df.to_csv("singleWeekFanduelData.csv")
+# Converts the dataframe to a csv
+df.to_csv("allHistoricalFanduelData.csv")
 
 
