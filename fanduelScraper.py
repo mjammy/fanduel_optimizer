@@ -43,9 +43,19 @@ delimitedData = grabData(soup)
 
 # Turn it into list of rows
 appendData(delimitedData,allLists)
-
-print allLists
     
+d = {   "Year" : yearList,
+        "Week" : weekList,
+        "Position" : posList,
+        "Player" : nameList,
+        "Team" : teamList,
+        "H/A" : homeAwayList,
+        "Opponent" : opponentList,
+        "Points" : pointsList, 
+        "Fanduel Salary" : salaryList }
 
+df = pd.DataFrame(d)
+
+df.to_csv("singleWeekFanduelData.csv")
 
 
