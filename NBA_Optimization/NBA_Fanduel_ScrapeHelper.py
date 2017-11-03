@@ -8,18 +8,17 @@ def getLastWeek(year):
     else:
         return 17
 
-''' Grabbing the fields into the proper fields '''
+''' Grabbing the data into the proper fields '''
 
 # Takes all data which is found in a <pre> tag in this case
 def grabData(soup):
-    return soup.find_all('pre')[0].get_text()
+    return soup.pre.pre.getText()
 
 # Iterates through rowified data and places it into lists
 def appendValues(separatedValues, allLists):
     numValues = len(separatedValues)
     for eachValue in range(0,numValues):
         allLists[eachValue].append(separatedValues[eachValue])
-
 
 ''' Higher level functions '''
 
